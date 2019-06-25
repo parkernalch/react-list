@@ -1,35 +1,24 @@
 import React, { Component } from 'react';
 import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import uuid from 'uuid';
+import { connect } from 'react-redux';
+import { getCharacters, deleteCharacter } from '../actions/characterActions';
+import PropTypes from 'prop-types';
 
 class CharacterList extends Component{
-    state = {
-        characters : [
-            {id: uuid(), name: 'Hector'},
-            {id: uuid(), name: 'Garen'},
-            {id: uuid(), name: 'Sukorb'},
-            {id: uuid(), name: 'Vik'},
-        ]
+
+    componentDidMount() {
+        this.props.getCharacters();
+    }
+
+    onDeleteClick = (id) => {
+        this.props.deleteCharacter(id);
     }
 
     render(){
-        const { characters } = this.state;
+        const { characters } = this.props.character;
         return(
             <Container>
-                <Button 
-                    color="dark"
-                    style={{marginBottom: '2rem'}}
-                    onClick={() => {
-                        const name = prompt('Enter Character Name');
-                        if(name){
-                            this.setState(state => ({
-                                characters: [...state.characters, {id: uuid(), name: name }]
-                            }));
-                        }
-                    }}
-                >Add Item</Button>
-
                 <ListGroup>
                     <TransitionGroup className="character-list">
                         {characters.map(({ id, name }) => (
@@ -39,11 +28,7 @@ class CharacterList extends Component{
                                         className="remove-btn"
                                         color="danger"
                                         size="sm"
-                                        onClick={() => {
-                                            this.setState(state => ({
-                                                characters: state.characters.filter(character => character.id !== id)
-                                            }));
-                                        }}
+                                        onClick={this.onDeleteClick.bind(this, id)}
                                     >&times;</Button>
                                     {name}
                                 </ListGroupItem>
@@ -56,4 +41,13 @@ class CharacterList extends Component{
     }
 }
 
-export default CharacterList;
+CharacterList.propTypes = {
+    getCharacters: PropTypes.func.isRequired,
+    character: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state) => ({
+    character: state.character
+});
+
+export default connect(mapStateToProps, { getCharacters, deleteCharacter })(CharacterList);
