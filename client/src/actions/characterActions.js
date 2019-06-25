@@ -1,21 +1,47 @@
-import { GET_CHARACTERS, ADD_CHARACTER, DELETE_CHARACTER } from './types';
+import axios from 'axios';
+import { GET_CHARACTERS, ADD_CHARACTER, DELETE_CHARACTER, CHARACTERS_LOADING } from './types';
 
-export const getCharacters = () => {
-    return {
-        type: GET_CHARACTERS
-    };
+export const getCharacters = () => dispatch => {
+    dispatch(setCharactersLoading());
+    axios
+        .get('/api/characters')
+        .then(res => 
+            dispatch({
+                type: GET_CHARACTERS,
+                payload: res.data
+            })
+        )
 };
 
-export  const deleteCharacter = (id) => {
+export const addCharacter = (character) => dispatch => {
+    axios
+        .post('/api/characters', character)
+        .then(res => 
+            dispatch({
+                type: ADD_CHARACTER,
+                payload: res.data
+            })
+        )
+}
+
+export  const deleteCharacter = (id) => dispatch => {
+    axios
+        .delete(`/api/characters/${id}`)
+        .then(res => 
+            dispatch({
+                type: DELETE_CHARACTER,
+                payload: id
+            })    
+        )
     return {
         type: DELETE_CHARACTER,
         payload: id
     }
 }
 
-export const addCharacter = (character) => {
+
+export const setCharactersLoading = () => {
     return {
-        type: ADD_CHARACTER,
-        payload: character
+        type: CHARACTERS_LOADING
     }
 }

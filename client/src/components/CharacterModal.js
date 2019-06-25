@@ -11,7 +11,6 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { addCharacter } from '../actions/characterActions';
-import uuid from 'uuid';
 
 class CharacterModal extends Component {
     state = {
@@ -35,7 +34,6 @@ class CharacterModal extends Component {
         e.preventDefault();
 
         const newCharacter = {
-            id: uuid(),
             name: this.state.name
         }
 

@@ -1,30 +1,32 @@
-import uuid from 'uuid';
-import { GET_CHARACTERS, ADD_CHARACTER, DELETE_CHARACTER } from '../actions/types';
+import { GET_CHARACTERS, ADD_CHARACTER, DELETE_CHARACTER, CHARACTERS_LOADING } from '../actions/types';
 
 const initialState = {
-    characters: [
-        {id: uuid(), name: 'Hector'},
-        {id: uuid(), name: 'Garen'},
-        {id: uuid(), name: 'Sukorb'},
-        {id: uuid(), name: 'Vik'}
-    ]
+    characters: [],
+    loading: false
 }
 
 export default function(state = initialState, action){
     switch(action.type){
         case GET_CHARACTERS:
             return {
-                ...state
-            }
-        case DELETE_CHARACTER:
-            return {
                 ...state,
-                characters: state.characters.filter(character => character.id !== action.payload)
+                characters: action.payload,
+                loading: false
             }
         case ADD_CHARACTER:
             return {
                 ...state,
                 characters: [action.payload, ...state.characters]
+            }
+        case DELETE_CHARACTER:
+            return {
+                ...state,
+                characters: state.characters.filter(character => character._id !== action.payload)
+            }
+        case CHARACTERS_LOADING:
+            return {
+                ...state,
+                loading: true
             }
         default:
             return state;
