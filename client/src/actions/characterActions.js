@@ -12,3 +12,10 @@ export  const deleteCharacter = (id) => {
         payload: id
     }
 }
+
+export const addCharacter = (character) => {
+    return {
+        type: ADD_CHARACTER,
+        payload: character
+    }
+}
