@@ -1,9 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
+const config = require('config');
 
 const characters = require('./routes/api/characters');
 const users = require('./routes/api/users');
+const auth = require('./routes/api/auth');
 
 const app = express();
 
@@ -11,7 +13,7 @@ const app = express();
 app.use(express.json());
 
 // MongoDB
-const db = require('./config/keys').mongoURI;
+const db = config.get('mongoURI');
 
 // connect to Mongo
 mongoose
@@ -25,6 +27,7 @@ mongoose
 // Use Routes
 app.use('/api/characters', characters);
 app.use('/api/users', users);
+app.use('/api/auth', auth);
 
 // Serve static assets if in production
 if(process.env.NODE_ENV == 'production') {
