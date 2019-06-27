@@ -5,10 +5,10 @@ const router = express.Router();
 const User = require('../../models/User');
 
 
-// @route   GET api/users
+// @route   POST api/users
 // @desc    register new user
 // @access  Public
-router.get('/', (req, res) => {
+router.post('/', (req, res) => {
     res.send('register');
 });
 
