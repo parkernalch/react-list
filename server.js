@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const path = require('path');
 
 const characters = require('./routes/api/characters');
@@ -9,14 +8,17 @@ const users = require('./routes/api/users');
 const app = express();
 
 // Bodyparser Middleware
-app.use(bodyParser.json());
+app.use(express.json());
 
 // MongoDB
 const db = require('./config/keys').mongoURI;
 
 // connect to Mongo
 mongoose
-    .connect(db)
+    .connect(db, {
+        useNewUrlParser: true,
+        useCreateIndex: true
+    })
     .then(() => console.log("MongoDB Connected ..."))
     .catch(err => console.log(err));
 
